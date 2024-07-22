@@ -1,5 +1,5 @@
 export type PostData = {
-  id: number;
+  id: string;
   title: string;
   description: string;
 };
@@ -8,5 +8,5 @@ export type NewPostData = {
   description: string;
 };
 export type SavedPostData = {
-  id: number;
+  id: string;
 };

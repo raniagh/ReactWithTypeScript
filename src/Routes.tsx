@@ -24,8 +24,17 @@ const router = createBrowserRouter([
       {
         path: '/posts',
         element: <PostsPage />,
-        // React Router’s defer allows the route component not to be blocked from rendering the component while data is being fetched
-        loader: async () => defer({ posts: getPosts() }),
+        /* React Query’s getQueryData function on the query client to get the existing data from its cache.
+         If there is cached data, it is returned; otherwise, the data is fetched, deferred, and added to the cache*/
+        loader: async () => {
+          const existingData = queryClient.getQueryData(['postsData']);
+          if (existingData) {
+            return defer({ posts: existingData });
+          }
+          return defer({
+            posts: queryClient.fetchQuery({ queryKey: ['postsData'], queryFn: getPosts }),
+          });
+        },
       },
       {
         path: 'products',

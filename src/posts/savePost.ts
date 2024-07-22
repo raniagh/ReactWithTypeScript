@@ -18,7 +18,7 @@ function assertIsSavedPost(post: any): asserts post is SavedPostData {
   if (!('id' in post)) {
     throw new Error("post doesn't contain id");
   }
-  if (typeof post.id !== 'number') {
-    throw new Error('id is not a number');
+  if (typeof post.id !== 'string') {
+    throw new Error('id is not a string');
   }
 }

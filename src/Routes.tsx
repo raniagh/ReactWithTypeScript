@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, defer, RouterProvider } from 'react-router-dom';
 import { ProductsPage } from './pages/ProductsPage';
 import App from './App';
 import { ProductPage } from './pages/ProductPage';
@@ -7,8 +7,13 @@ import { ErrorPage } from './pages/ErrorPage';
 //import { ContactUncontrolled, contactPageAction } from './pages/ContactUncontrolled';
 import { ThankYouPage } from './pages/ThankYouPage';
 import { ContactForm } from './pages/ContactForm';
+import { PostsPage } from './posts/PostsPage';
+import { getPosts } from './posts/getPosts';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const AdminPage = lazy(() => import('./pages/AdminPage'));
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -16,6 +21,12 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: '/posts',
+        element: <PostsPage />,
+        // React Router’s defer allows the route component not to be blocked from rendering the component while data is being fetched
+        loader: async () => defer({ posts: getPosts() }),
+      },
       {
         path: 'products',
         element: <ProductsPage />,
@@ -47,5 +58,9 @@ const router = createBrowserRouter([
 ]);
 
 export function Routes() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }

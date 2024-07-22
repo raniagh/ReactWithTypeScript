@@ -17,16 +17,23 @@ export default App;*/
 import { UserHeader } from './UserHeader';
 import { Main } from './Main';
 import { AppProvider } from './AppContext';
+import { PostsPage } from './posts/PostsPage';
+import { Outlet } from 'react-router-dom';
 
 //Add the AppProvider so the components can access the context
 function App() {
-  return (
+  /* return (
     <div className="max-w-7xl mx-auto px-4">
       <AppProvider>
         <UserHeader />
         <Main />
       </AppProvider>
     </div>
+  ); */
+  return (
+    <>
+      <Outlet />
+    </>
   );
 }
 

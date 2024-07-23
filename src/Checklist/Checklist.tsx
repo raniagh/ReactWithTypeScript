@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 type Props<Data> = {
   data: Data[];
@@ -6,14 +6,26 @@ type Props<Data> = {
   id: keyof Data;
   primary: keyof Data;
   secondary: keyof Data;
+  //ReactNode represents an element that React can render.
+  renderItem?: (item: Data) => ReactNode;
   //By using & (intersection), the Props<Data> type now includes all the properties that a ul element can accept, such as className, style, onClick, etc.
 } & ComponentPropsWithoutRef<'ul'>;
 
 //We use a rest parameter in the component props to collect all the HTML element props into an array
-export function Checklist<Data>({ data, id, primary, secondary, ...ulProps }: Props<Data>) {
+export function Checklist<Data>({
+  data,
+  id,
+  primary,
+  secondary,
+  renderItem,
+  ...ulProps
+}: Props<Data>) {
   return (
     <ul className="bg-gray-300 rounded p-10" {...ulProps}>
       {data.map((item) => {
+        if (renderItem) {
+          return renderItem(item);
+        }
         const idValue = item[id] as unknown;
         if (typeof idValue !== 'string' && typeof idValue !== 'number') {
           return null;

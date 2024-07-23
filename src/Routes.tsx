@@ -10,6 +10,7 @@ import { ContactForm } from './pages/ContactForm';
 import { PostsPage } from './posts/PostsPage';
 import { getPosts } from './posts/getPosts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Checklist } from './Checklist';
 
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
@@ -43,6 +44,29 @@ const router = createBrowserRouter([
       {
         path: 'products/:id',
         element: <ProductPage />,
+      },
+      {
+        path: 'checklist',
+        element: (
+          <Checklist
+            data={[
+              { id: 1, name: 'Lucy', role: 'Manager' },
+              { id: 2, name: 'Bob', role: 'Developer' },
+              { id: 3, name: 'Bill', role: 'Developer' },
+              { id: 4, name: 'Tara', role: 'Developer' },
+              { id: 5, name: 'Sara', role: 'UX' },
+              { id: 6, name: 'Derik', role: 'QA' },
+            ]}
+            id="id"
+            primary="name"
+            secondary="role"
+            style={{
+              width: '300px',
+              maxHeight: '380px',
+              overflowY: 'auto',
+            }}
+          />
+        ),
       },
       {
         path: 'admin',

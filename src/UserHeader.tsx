@@ -1,11 +1,39 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { authenticate } from './api/authenticate';
 import { authorize } from './api/authorize';
 import { useAppContext } from './AppContext';
+import { RootState } from './store/store';
+import {
+  authenticateAction,
+  authenticatedAction,
+  authorizeAction,
+  authorizedAction,
+} from './store/userSlice';
 
 export function UserHeader() {
-  const { user, loading, dispatch } = useAppContext();
+  //Using Redux
+  //useSelector is used to get the required state
+  const user = useSelector((state: RootState) => state.user.user);
+  const loading = useSelector((state: RootState) => state.user.loading);
+  //useDispatch is used to get a dispatch function
+  const dispatch = useDispatch();
 
   async function handleSignInClick() {
+    dispatch(authenticateAction());
+    const authenticatedUser = await authenticate();
+    dispatch(authenticatedAction(authenticatedUser));
+    if (authenticatedUser !== undefined) {
+      dispatch(authorizeAction());
+      const authorizedPermissions = await authorize(authenticatedUser.id);
+      dispatch(authorizedAction(authorizedPermissions));
+    }
+  }
+
+  /** Using context API 
+  const { user, loading, dispatch } = useAppContext();
+
+
+   async function handleSignInClick() {
     dispatch({ type: 'authenticate' });
     const authenticatedUser = await authenticate();
     dispatch({
@@ -21,6 +49,7 @@ export function UserHeader() {
       });
     }
   }
+*/
 
   return (
     <header className="flex justify-between items-center border-b-2 border-gray-100 py-6">

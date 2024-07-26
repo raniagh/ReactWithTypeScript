@@ -19,22 +19,24 @@ import { Main } from './Main';
 import { AppProvider } from './AppContext';
 import { PostsPage } from './posts/PostsPage';
 import { Outlet } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 //Add the AppProvider so the components can access the context
 function App() {
-  /* return (
+  return (
     <div className="max-w-7xl mx-auto px-4">
-      <AppProvider>
+      <Provider store={store}>
         <UserHeader />
         <Main />
-      </AppProvider>
+      </Provider>
     </div>
-  ); */
-  return (
+  );
+  /* return (
     <>
       <Outlet />
     </>
-  );
+  ); */
 }
 
 export default App;

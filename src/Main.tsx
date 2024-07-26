@@ -1,8 +1,15 @@
+import { useSelector } from 'react-redux';
 import { useAppContext } from './AppContext';
 import { Content } from './Content';
+import { RootState } from './store/store';
 
 export function Main() {
+  /*  using Context API
   const { user } = useAppContext();
+*/
+
+  //Using Redux
+  const user = useSelector((state: RootState) => state.user.user);
 
   return (
     <main className="py-8">

@@ -12,10 +12,20 @@ import { getPosts } from './posts/getPosts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Checklist } from './Checklist';
 import { RepoPage } from './github/RepoPage';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { RepoPageWithApollo } from './github/RepoPageWithApollo';
 
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
-const queryClient = new QueryClient();
+//const queryClient = new QueryClient();
+
+const queryClient = new ApolloClient({
+  uri: process.env.REACT_APP_GITHUB_URL!,
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `bearer ${process.env.REACT_APP_GITHUB_PAT}`,
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -28,7 +38,7 @@ const router = createBrowserRouter([
         element: <PostsPage />,
         /* React Query’s getQueryData function on the query client to get the existing data from its cache.
          If there is cached data, it is returned; otherwise, the data is fetched, deferred, and added to the cache*/
-        loader: async () => {
+        /*  loader: async () => {
           const existingData = queryClient.getQueryData(['postsData']);
           if (existingData) {
             return defer({ posts: existingData });
@@ -36,7 +46,7 @@ const router = createBrowserRouter([
           return defer({
             posts: queryClient.fetchQuery({ queryKey: ['postsData'], queryFn: getPosts }),
           });
-        },
+        }, */
       },
       {
         path: 'products',
@@ -97,14 +107,18 @@ const router = createBrowserRouter([
         path: '/github',
         element: <RepoPage />,
       },
+      {
+        path: '/githubapollo',
+        element: <RepoPageWithApollo />,
+      },
     ],
   },
 ]);
 
 export function Routes() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <ApolloProvider client={queryClient}>
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </ApolloProvider>
   );
 }

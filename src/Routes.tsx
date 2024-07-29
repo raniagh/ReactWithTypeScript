@@ -11,6 +11,7 @@ import { PostsPage } from './posts/PostsPage';
 import { getPosts } from './posts/getPosts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Checklist } from './Checklist';
+import { RepoPage } from './github/RepoPage';
 
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path: '/thank-you/:name',
         element: <ThankYouPage />,
+      },
+      {
+        path: '/github',
+        element: <RepoPage />,
       },
     ],
   },

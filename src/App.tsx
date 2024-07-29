@@ -24,19 +24,19 @@ import { store } from './store/store';
 
 //Add the AppProvider so the components can access the context
 function App() {
-  return (
+  /* return (
     <div className="max-w-7xl mx-auto px-4">
       <Provider store={store}>
         <UserHeader />
         <Main />
       </Provider>
     </div>
-  );
-  /* return (
+  ); */
+  return (
     <>
       <Outlet />
     </>
-  ); */
+  );
 }
 
 export default App;

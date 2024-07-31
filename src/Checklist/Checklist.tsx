@@ -46,6 +46,7 @@ export function Checklist<Data>({
                 type="checkbox"
                 checked={checkedIds.includes(idValue)}
                 onChange={handleCheckChange(idValue)}
+                data-testid={`Checklist__input__${idValue.toString()}`}
               />
               <div className="ml-2">
                 <div className="text-xl text-gray-800 pb-1">{primaryText}</div>
